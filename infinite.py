@@ -26,9 +26,14 @@ class signal(object):
 		self.waves.append(build_signal(self.waves, depth-1))
 		return nthwave
 
-def parametric(signal1, signal2, range):
+def parametric(signal1, signal2, range, width = 17, height = 11):
 	""" Creates a parametric plot of signal1 vs signal2 for t = [range]
 	"""
+	for t in range:
+		x = signal1(t)
+		y = signal2(t)
+		#draw dot/square
+
 
 def main():
 	# build signal 1
