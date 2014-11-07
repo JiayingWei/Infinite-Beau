@@ -1,4 +1,13 @@
+from scipy.integrate import quad
 import math, pygame
+
+pi = math.pi
+
+def sin(x):
+      return math.sin(x)
+def cos(x):
+      return math.cos(x)
+
 
 class Wave(object):
 	""" Creates a wave object
@@ -7,29 +16,65 @@ class Wave(object):
 		self.amplitude = amplitude
 		self.frequency = frequency
 		self.period = 1/frequency
+            self.fund_freq = 2*pi/self.period
 		self.phase = phase
 
-class Signal(object):
+
+class signal(wave):
+
 	""" Creates a signal comprised of many waves (so an approximate of a signal)
 	"""
 	def __init__(self, depth):
-		self.depth = depth
+		self.depth = depth #          N = #define depth
 		self.waves = []	#list of wave objects
+                        
+      def function(self, equation):
+            return equation
 
-	def build(self,list, depth):
+#      def build_signal(self,list):
+	def build(self,list):
 		""" Uses recursion to create a approximation of a n depth signal (probably has to return a list which has to be turned into an equation in calculate)
 		""" 
-		#if basecase == true quit
-			#return base wave
-		#calculate the nth wave
-		nthwave = wave(1,1,1)
-		self.waves.append(build_signal(self.waves, depth-1))
-		return nthwave
+            a0, err = (2/self.period)*quad(function(equation), -1*self.period, self.period)            
+            self.x_0 = a0/2            
+            n = self.depth
+            
+            for i in range(self.depth):
+                def Aintegrand(x):    
+                    return function(x)*sin(i*w0*x)
+                def Bintegrand(x):
+                    return function(x)*cos(i*w0*x)    
+                
+                ai, err = (2/period)*quad(Aintegrand, -1*period, period)
+                self.waves.append(ai)
+                bi, err = (2/period)*quad(Bintegrand, -1*period, period)     
+                self.waves.append(bi)    
+            return self.waves            
+
+                    
+#		nthwave = wave(1,1,1) #?
+#		self.waves.append(build_signal(self.waves, self.depth-1))
+#		return nthwave
 
 	def calculate(self,t):
 		""" Calculates the value of the signal at time = t
 		"""
-		return 5
+          x_0 = self.build.x_0
+          for t in range:
+         
+             def Sigma(x):    
+                if n == 0:
+                    return x_0
+            
+                else:
+                    n = n-1
+                    sigma = self.waves[n*2]*sin(n*w0*t)+self.waves[n*2+1]*cos(n*w0*t)+ Sigma(t)
+                    return sigma
+                    
+		 x = Sigma(t)
+    		 y = Sigma(t)
+		#draw dot/square		
+#  return 5
 
 class Canvas(object):
 	""" Encodes the state of the canvas
@@ -79,6 +124,7 @@ class Square(Marker):
 
 	def draw(self, screen):
 		pygame.draw.rect(screen, self.color, ((self.x, self.y),self.size),0)
+
 
 
 def main():
