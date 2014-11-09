@@ -1,3 +1,14 @@
+"""
+Fourier Series is calculate based on the following process:
+
+Given some function,
+   x(t) = x_0 + SUM_from_1_to_depth(an*sin(fundamental_frequency * depth * t) + 
+          bn*cos(fundamental_frequency * depth * t))
+where an and bn are coefficients calculated as the definite integral of the 
+given function over the course of a period at each depth
+"""
+
+
 from scipy.integrate import quad
 import math, pygame
 
@@ -13,7 +24,7 @@ class Wave(object):
 #         self.amplitude = amplitude
          self.frequency = frequency
          self.period = 1/frequency
-         self.fund_freq = 2*pi/self.period
+         self.fund_freq = 2*pi/self.period #fundamental freqeuncy
 #         self.phase = phase
 
 
@@ -27,16 +38,18 @@ class Signal(Wave):
         self.x_0 = 0
     
     def build(self):
-        """ Uses recursion to create a approximation of a n depth signal (
-        probably has to return a list which has to be turned into an 
-        equation in calculate)
+        """ Given some function and a depth, outputs a list of constants that
+        will govern how much of each pure signal must be used in the 'calculate' 
+        method
         """ 
         def function(x):
             return 2*x        
         
-        (a0, err) =quad(function, -1*self.period, self.period) #a0 is the series constant           
+        #calculate the series constant
+        (a0, err) =quad(function, -1*self.period, self.period)           
         self.x_0 = a0/2 * (2/self.period)           
         
+        #calculate list of coefficients for the pure sines and cosines needed
         for i in range(self.depth):
             def Aintegrand(x):    
                 return function(x)*sin(i*self.fund_freq*x)
@@ -53,12 +66,14 @@ class Signal(Wave):
 
 
     def calculate(self,t):
-         """ Calculates the value of the signal at time = t
+         """ Calculates the value of the signal at time = t 
          """
          x_0 = self.x_0
          self.n = self.depth 
          
          def Sigma(x): 
+             """ Uses recursion to build a signal that is evaluated at every t
+             """
             if self.n == 0:
                 return x_0
         
@@ -126,11 +141,11 @@ def main():
 	
 	#initialize all initial objects
 
-	signal1 = Signal(4, (1/pi))
+	signal1 = Signal(4, (1/pi))    #set signal to depth 4 and frequency 1/pi
 	signal2 = Signal(4, (1/pi))
-      signal1.build()
+      signal1.build()       #Build the constants necessary for the signal
       signal2.build()
-	canvas = Canvas()
+	canvas = Canvas()      #calculate and draw the signals as coordinates
 
 
 
