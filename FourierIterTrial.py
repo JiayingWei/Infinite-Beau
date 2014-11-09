@@ -8,45 +8,46 @@ from scipy.integrate import quad
 import math
 
 def function(x):
-    return f(x)
+    return 2*x
 def sin(x):
     return math.sin(x)
 def cos(x):
     return math.cos(x)
 
-N = #define depth
-pi = math.pi
-period = 
-w0 = 2*pi/period #T0 = 2L
-#ans, err = quad(integrand, 0, pi/2)
-#print ans
-a0, err = (2/period)*quad(function, -1*period, period)
-x_t = a0/2
 
-def find_constants():
-    for n in range(N):
-        list_of_constants = []    
+pi = math.pi
+period = pi
+w0 = 2*pi/period #fundamental frequency
+(a0, err) =quad(function, 0, period) #a0 is the series constant
+x_t = (2/period)*a0/2
+
+def find_constants(N):
+    list_of_constants = [] 
+    for n in range(N):   
         def Aintegrand(x):    
             return function(x)*sin(n*w0*x)
         def Bintegrand(x):
             return function(x)*cos(n*w0*x)    
         
-        an, err = (2/period)*quad(Aintegrand, -1*period, period)
-        list_of_constant.append(an)
-        bn, err = (2/period)*quad(Bintegrand, -1*period, period)     
-        list_of_constants.append(bn)    
+        an, err = quad(Aintegrand, 0, period)
+        an = (2/period)*an
+        list_of_constants.append(an)
+        bn, err = quad(Bintegrand, 0, period) 
+        bn = (2/period)*bn
+        list_of_constants.append(bn)  
     return list_of_constants
    
 def Sigma(n,t):    
+    constants = find_constants(3)    
     if n == 0:
         return x_t
 
     else:
         n = n-1
-        sigma = list_of_constants[n*2]*sin(n*w0*t)+list_of_constants[n*2+1]*cos(n*w0*t)+ Sigma(n,t)
+        sigma = constants[n]*sin(n*w0*t)+constants[n+1]*cos(n*w0*t)+ Sigma(n,t)
         return sigma
     
-    
+print Sigma(3,1)    
     
     
     

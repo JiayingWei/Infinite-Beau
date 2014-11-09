@@ -1,80 +1,73 @@
 from scipy.integrate import quad
 import math, pygame
 
-pi = math.pi
-
-def sin(x):
-      return math.sin(x)
-def cos(x):
-      return math.cos(x)
+from math import sin as sin
+from math import cos as cos
+from math import pi as pi
 
 
 class Wave(object):
 	""" Creates a wave object
 	"""
-	def __init__(self, amplitude, frequency, phase):
-		self.amplitude = amplitude
-		self.frequency = frequency
-		self.period = 1/frequency
-            self.fund_freq = 2*pi/self.period
-		self.phase = phase
+	def __init__(self, frequency):
+#         self.amplitude = amplitude
+         self.frequency = frequency
+         self.period = 1/frequency
+         self.fund_freq = 2*pi/self.period
+#         self.phase = phase
 
 
-class signal(wave):
-
-	""" Creates a signal comprised of many waves (so an approximate of a signal)
-	"""
-	def __init__(self, depth):
-		self.depth = depth #          N = #define depth
-		self.waves = []	#list of wave objects
-                        
-      def function(self, equation):
-            return equation
-
-#      def build_signal(self,list):
-	def build(self,list):
-		""" Uses recursion to create a approximation of a n depth signal (probably has to return a list which has to be turned into an equation in calculate)
-		""" 
-            a0, err = (2/self.period)*quad(function(equation), -1*self.period, self.period)            
-            self.x_0 = a0/2            
-            n = self.depth
+class Signal(Wave):
+    """Creates a signal comprised of many waves (so an approximate of a signal)
+    """
+    def __init__(self, depth, frequency):
+        super(Signal,self).__init__(frequency)        
+        self.depth = depth     # define depth of approximation
+        self.waves = []     # list of wave objects
+        self.x_0 = 0
+    
+    def build(self):
+        """ Uses recursion to create a approximation of a n depth signal (
+        probably has to return a list which has to be turned into an 
+        equation in calculate)
+        """ 
+        def function(x):
+            return 2*x        
+        
+        (a0, err) =quad(function, -1*self.period, self.period) #a0 is the series constant           
+        self.x_0 = a0/2 * (2/self.period)           
+        
+        for i in range(self.depth):
+            def Aintegrand(x):    
+                return function(x)*sin(i*self.fund_freq*x)
+            def Bintegrand(x):
+                return function(x)*cos(i*self.fund_freq*x)    
             
-            for i in range(self.depth):
-                def Aintegrand(x):    
-                    return function(x)*sin(i*w0*x)
-                def Bintegrand(x):
-                    return function(x)*cos(i*w0*x)    
-                
-                ai, err = (2/period)*quad(Aintegrand, -1*period, period)
-                self.waves.append(ai)
-                bi, err = (2/period)*quad(Bintegrand, -1*period, period)     
-                self.waves.append(bi)    
-            return self.waves            
+            (ai, err) = quad(Aintegrand, -1*self.period, self.period)
+            ai = (2/self.period) * ai
+            self.waves.append(ai)
+            (bi, err) = quad(Bintegrand, -1*self.period, self.period)
+            bi = (2/self.period) * bi
+            self.waves.append(bi) 
+        return self.waves            
 
-                    
-#		nthwave = wave(1,1,1) #?
-#		self.waves.append(build_signal(self.waves, self.depth-1))
-#		return nthwave
 
-	def calculate(self,t):
-		""" Calculates the value of the signal at time = t
-		"""
-          x_0 = self.build.x_0
-          for t in range:
+    def calculate(self,t):
+         """ Calculates the value of the signal at time = t
+         """
+         x_0 = self.x_0
+         self.n = self.depth 
          
-             def Sigma(x):    
-                if n == 0:
-                    return x_0
-            
-                else:
-                    n = n-1
-                    sigma = self.waves[n*2]*sin(n*w0*t)+self.waves[n*2+1]*cos(n*w0*t)+ Sigma(t)
-                    return sigma
-                    
-		 x = Sigma(t)
-    		 y = Sigma(t)
-		#draw dot/square		
-#  return 5
+         def Sigma(x): 
+            if self.n == 0:
+                return x_0
+        
+            else:
+                self.n = self.n-1
+                sigma = self.waves[self.n*2]*sin(self.n*self.fund_freq*t)+self.waves[self.n*2+1]*cos(self.n*self.fund_freq*t)+ Sigma(t)
+                return sigma
+         return Sigma(t)
+                
 
 class Canvas(object):
 	""" Encodes the state of the canvas
@@ -93,7 +86,7 @@ class Canvas(object):
 		for t in range(trange):
 			x = signal1.calculate(t)
 			y = signal2.calculate(t)
-
+   
 			marker1 = Square(x,y,(255, 255, 255))
 			marker1.draw(self.screen)
 			pygame.display.update()
@@ -133,9 +126,16 @@ def main():
 	
 	#initialize all initial objects
 
-	signal1 = Signal(4)
-	signal2 = Signal(4)
+	signal1 = Signal(4, (1/pi))
+	signal2 = Signal(4, (1/pi))
+      signal1.build()
+      signal2.build()
 	canvas = Canvas()
+
+
+
+
+
 
 	#build the signals using recursion
 
