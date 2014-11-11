@@ -9,7 +9,7 @@ given function over the course of a period at each depth
 """
 
 from scipy.integrate import quad
-import math, pygame
+import math, pygame, numpy
 
 from math import sin as sin
 from math import cos as cos
@@ -108,7 +108,7 @@ class Canvas(object):
         """ Creates a parametric plot of signal1 vs signal2 for t = [range] where signal1 and signal2 are Signal objects
         """
         self.screen.fill(self.backgroundColor)
-        for t in range(trange):
+        for t in numpy.arange(0, 20, .1):
             x = signal1.calculate(t) * 10
             y = signal2.calculate(t) * 10
             point = Square(x + self.displayWidth/2 ,y + self.displayHeight/2,(255, 255, 255))
