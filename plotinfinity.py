@@ -93,28 +93,46 @@ class Signal(Wave):
         return Sigma(t)
 
 def main():
-
+    """builds all of the initial signals
+    """
     signal1 = Signal(4, 1/(pi))    #set signal to depth 4 and frequency 1/pi
     signal2 = Signal(3, (1/(7*pi)))
 
     signal1.build()       #Build the constants necessary for the signal
     signal2.build()
 
+    """plots all of the original signal vs the new signal
+    """
+
     x = []
     y_original = []
-    y_new = []
-
-
-    for t in numpy.arange(0,10,.1):
+    y_fourier = []
+    for t in numpy.arange(0, 10,.1):
         x.append(t)
         y_original.append(signal1.functionR(t))
-        y_new.append(signal1.calculate(t))
+        y_fourier.append(signal1.calculate(t))
 
-    print y_original
-    print y_new
+    plt.plot(x, y_original)
+    plt.plot(x, y_fourier)
+    plt.show()
 
-    plt.plot(x, y_original,hold = True)
-    plt.plot(x, y_new,hold = True)
+    """parametrically plots signal1 vs signal2
+    """
+
+    sig1_original = []
+    sig2_original = []
+    sig1_fourier = []
+    sig2_fourier = []
+
+    for t in numpy.arange(0,10,.1):
+        sig1_original.append(signal1.functionR(t))
+        sig2_original.append(signal2.functionR(t))
+        sig1_fourier.append(signal1.calculate(t))
+        sig2_fourier.append(signal2.calculate(t))
+
+    plt.plot(sig1_original, sig2_original)
+    plt.show()
+    plt.plot(sig1_fourier, sig2_fourier)
     plt.show()
 
 if __name__ == '__main__':
