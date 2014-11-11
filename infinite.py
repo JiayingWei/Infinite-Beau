@@ -10,6 +10,7 @@ given function over the course of a period at each depth
 
 from scipy.integrate import quad
 import math, pygame, numpy
+import matplotlib.pyplot as plt
 
 from math import sin as sin
 from math import cos as cos
@@ -154,7 +155,7 @@ def main():
     signal2.build()
     print signal1.waves
     canvas = Canvas()      #calculate and draw the signals as coordinates
-    canvas.paint_parametric(signal1, signal2)    #for now you can't quit until the program is finished drawing, so don't set a big trange. I'll fix it when I have more time
+    # canvas.paint_parametric(signal1, signal2)    #for now you can't quit until the program is finished drawing, so don't set a big trange. I'll fix it when I have more time
 
     running = True
 
