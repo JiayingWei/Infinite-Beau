@@ -1,9 +1,41 @@
-import math, numpy
+import math, numpy, wave
 import matplotlib.pyplot as plt
+from pylab import fromstring
 
 
 def inputsignal(t):
 	return math.sin(t)
+
+
+def WAVtoSignal(pathname):
+	"""Takes in a .wav music file and outputs its waveform
+	"""
+	song = wave.open(pathname,'r')
+	waveform = song.readframes(-1)
+	waveform = fromstring(waveform, dtype = int)
+	return waveform
+
+def normSignal(waveform):
+	""" Takes a waveform: normalizes the x to [-1, 1] and normalizes the y to [0, 2*pi]
+	"""
+	resolution = 10000					#points of resolution
+	step = len(waveform)/ resolution	#step size
+	squished = []						#squished waveform
+	minimum = min(waveform)
+	maximum = max(waveform)
+	for i in range(resolution):
+		squished.append(waveform[i * step])
+		squished[i] = remapInterval(squished[i], minimum, maximum, -1, 1)
+	plt.plot(squished)
+	plt.show()
+	return squished
+
+
+def remapInterval(value, input_start, input_end, output_start, output_end):
+	""" Maps the input value that is in the interval [input_interval_start, input_interval_end]
+		to the output interval [output_interval_start, output_interval_end].
+	"""
+	return (value - input_start) * (output_end - output_start) / (input_end - input_start) + output_start
 
 
 def fourierTransform(input_signal, depth):
@@ -48,7 +80,7 @@ def plotParametric(function1, function2, trange = 2 * math.pi):
 def main():
 	""" Body runs here
 	"""
-	plotAgainstT(inputsignal)
-
+	duck = WAVtoSignal('comebackhome.wav')
+	normSignal(duck)	
 if __name__ == '__main__':
 	main()
