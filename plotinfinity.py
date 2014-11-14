@@ -51,7 +51,7 @@ class Signal(Wave):
         (a0, err) = quad(self.functionR, -1*self.period, self.period) #a0 is the series constant
         # (a0_, err_) = quad(self.functionL, 0, self.period)  
         # a0 = a0 + a0_         
-        self.x_0 = a0/2 * (2/self.period)           
+        self.x_0 = a0/(2 * self.period)           
         
         for i in range(self.depth):
             def AintegrandR(x):    
@@ -65,11 +65,11 @@ class Signal(Wave):
             
             (ai, err) = quad(AintegrandR, -1*self.period, self.period)
             # (ai_,err_) = quad(AintegrandL, 0, self.period)
-            ai = (2/self.period) * ai
+            ai = ai / self.period
             self.waves.append(ai)
             (bi, err) = quad(BintegrandR, -1*self.period, self.period)
             # (bi_, err_) = quad(BintegrandL, 0, self.period)
-            bi = (2/self.period) * bi
+            bi = bi / self.period
             self.waves.append(bi) 
         return self.waves           
 
