@@ -38,7 +38,7 @@ class Signal(Wave):
         self.x_0 = 0
     
     def functionR(self, x):
-        return -10*cos(x)*sin(x)
+        return -10*cos(x)*sin(x) + cos(x+2)
     # def functionL(self, x):
     #     return -10*sin(x)
 
@@ -95,7 +95,7 @@ class Signal(Wave):
 def main():
     """builds all of the initial signals
     """
-    signal1 = Signal(4, 1/(pi))    #set signal to depth 4 and frequency 1/pi
+    signal1 = Signal(2, 1/(pi))    #set signal to depth 4 and frequency 1/pi
     signal2 = Signal(3, (1/(7*pi)))
 
     signal1.build()       #Build the constants necessary for the signal
@@ -112,28 +112,29 @@ def main():
         y_original.append(signal1.functionR(t))
         y_fourier.append(signal1.calculate(t))
 
-    plt.plot(x, y_original)
-    plt.plot(x, y_fourier)
+    plt.plot(x, y_original, label = "original signal")
+    plt.plot(x, y_fourier, label = "Fourier signal")
+    plt.legend()
     plt.show()
 
     """parametrically plots signal1 vs signal2
     """
 
-    sig1_original = []
-    sig2_original = []
-    sig1_fourier = []
-    sig2_fourier = []
+    # sig1_original = []
+    # sig2_original = []
+    # sig1_fourier = []
+    # sig2_fourier = []
 
-    for t in numpy.arange(0,10,.1):
-        sig1_original.append(signal1.functionR(t))
-        sig2_original.append(signal2.functionR(t))
-        sig1_fourier.append(signal1.calculate(t))
-        sig2_fourier.append(signal2.calculate(t))
+    # for t in numpy.arange(0,10,.1):
+    #     sig1_original.append(signal1.functionR(t))
+    #     sig2_original.append(signal2.functionR(t))
+    #     sig1_fourier.append(signal1.calculate(t))
+    #     sig2_fourier.append(signal2.calculate(t))
 
-    plt.plot(sig1_original, sig2_original)
-    plt.show()
-    plt.plot(sig1_fourier, sig2_fourier)
-    plt.show()
+    # plt.plot(sig1_original, sig2_original)
+    # plt.show()
+    # plt.plot(sig1_fourier, sig2_fourier)
+    # plt.show()
 
 if __name__ == '__main__':
     main()
