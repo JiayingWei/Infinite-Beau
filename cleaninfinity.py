@@ -31,6 +31,8 @@ def normSignal(waveform):
 	for i in range(resolution):
 		squished.append([i*2*pi/resolution, float(waveform[i * step])])
 		squished[i][1] = remap(squished[i][1], minimum, maximum, -1, 1)
+		plt.plot(i,squished[i][1])
+	plt.show()
 	return squished
 
 
@@ -86,7 +88,6 @@ def main():
 	"""
 
 	toanyone = WAVtoSignal('comebackhome.wav')
-	print inputSignal(2, toanyone)
 
 if __name__ == '__main__':
 	main()
