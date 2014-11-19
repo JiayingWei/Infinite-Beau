@@ -1,7 +1,6 @@
 from scipy.integrate import quad
-import numpy as np
 import matplotlib.pyplot as plt
-import cmath
+import cmath, numpy
 from math import sin as sin
 from math import cos as cos
 from math import pi as pi
@@ -36,17 +35,17 @@ def curve_generator(l,Ak,ak,mu0,L,delta0,Z0):
 	(integral_imag, erimag) = quad(func = curve_integrate_this_imag, a = 0, b = 2*pi*l/L, args = (Ak,ak,mu0,delta0))
 	integral =  integral_real + integral_imag * 1j
 	integral =  L/(2*pi) * integral
-	x = Z0[0] + integral
-	y = Z0[1] + integral
-	return (x,y)
+	r = Z0[0] + integral
+	theta = Z0[1] + integral
+	return (r, theta)
 
 def draw_curves(Ak,ak,mu0,L,delta0,Z0):
 	x = []
 	y = []	
-	for l in range(0,L,L/10):
+	for l in numpy.arange(0,L,float(L)/1000):
 		coordinates = curve_generator(l,Ak,ak,mu0,L,delta0,Z0)
-		x.append(coordinates[0])
-		y.append(coordinates[1])
+		x.append(coordinates[0]*cmath.cos(coordinates[1]))
+		y.append(coordinates[0]*cmath.sin(coordinates[1]))
 	plt.plot(x,y)
 	plt.show()
 
@@ -60,7 +59,7 @@ def main():
 
 	L = 10 #length of the line
 	delta0 = 1 #no idea what units this should be in
-	Z0 = (0,0) #not sure if this is right
+	Z0 = (0,5) #not sure if this is right
 
 	draw_curves(Ak,ak,mu0,L,delta0,Z0)
 	
