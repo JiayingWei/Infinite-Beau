@@ -1,7 +1,10 @@
 import math, numpy, wave
 import matplotlib.pyplot as plt
 from pylab import fromstring
-from math import pi 
+from scipy.integrate import quad
+from math import sin as sin
+from math import cos as cos
+from math import pi as pi
 
 
 def inputSignal(t,squishedlist, resolution = 10000):
@@ -44,19 +47,51 @@ def remap(value, low1, high1, low2, high2):
 	# return value - low1
 
 
-def fourierTransform(input_signal, depth):
+def find_coeff(input_signal, depth, period):
 	""" Outputs Amplitude and Phase information by Fourier transforming an input signal (which must be a function)
 	"""
-	amplitude = []
-	phi = []
+	def input_function(x):
+		return input_signal
 
-	return [amplitude, phi]
+	fund_feq = 2 * pi / period
+	AK = []
+	alphaK = []
 
-def calculateCurve(amplitude, phi, t):
-	""" Takes in the Amplitude and Phi information of the Fourier transform of the input signal
-		and outputs the value of the calculated curve at a time t
+	(A0, err) = quad(func = input_function, a = 0, b = period)
+	mu0 = A0 / 2
+
+	for n in range(1, depth+1):
+		def a_function(x, i):
+			return input_function(x) * cos(i * fund_feq * x)
+		def b_function(x, i):
+			return input_function(x) * sin(i * fund_feq * x)
+		(a, err) = quad(a_function, 0, period, n)
+		an = 2 * a / period
+		(b, err) = quad(b_function, 0, period, n)
+		bn = 2 * b / period
+		Ak = math.sqrt(an**2 + bn**2)
+		AK.append(Ak)
+		alphak = math.asin(an/Ak)
+		alphaK.append(alphak)
+
+	return (AK, alphaK, mu0, fund_feq)
+
+def build_function(point_t):
+	""" calculates the coordinate of the point at the an input time t
 	"""
-	return 0 + L/2*pi
+	coefficients = find_coeff(-1*cos(x), 2, 2*pi)
+	Amp = coefficients[0]
+	Phase = coefficients[1]
+	constant = coefficients[2]
+	fund_feq = coefficients[3]
+	Sigma = []
+
+	def find_sum(number):
+		for i in range(1, len(Amp)):
+			Sigma.append(Amp[i-1] * sin(i * fund_feq * number + Phase[i-1]))
+		return sum(Sigma)
+
+	return find_sum(point_t) + constant
 
 def plotAgainstT(function, trange = 2 * pi):
 	""" Takes in an input function and plots it against time. Use it for debugging
