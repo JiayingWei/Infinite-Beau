@@ -40,32 +40,17 @@ def curve_generator(l,Ak,ak,mu0,L,delta0,Z0):
 	return (r, theta)
 
 def draw_curves(Ak,ak,mu0,L,delta0,Z0):
+	"""Uses matlibplot to visualize the curve
+	"""
 	x = []
-	y = []	
-	for l in numpy.arange(0,L,float(L)/1000):
+	y = []
+	resolution = 10000	
+	for l in numpy.arange(0,L,float(L)/resolution):
 		coordinates = curve_generator(l,Ak,ak,mu0,L,delta0,Z0)
-		x.append(coordinates[0]*cmath.cos(coordinates[1]))
-		y.append(coordinates[0]*cmath.sin(coordinates[1]))
-	plt.plot(x,y)
-	plt.show()
-
-def main():
-	#What is being outputted from the FFT function?
-	#A list of [Ak] and a list of [ak]
-	#The depth would be the length of Ak
-	Ak = [1,2,3,4]
-	ak = [4,3.3,2,1]
-	mu0 = calculate_mu0(Ak,ak)
-
-	L = 10 #length of the line
-	delta0 = 1 #no idea what units this should be in
-	Z0 = (0,5) #not sure if this is right
-
-	draw_curves(Ak,ak,mu0,L,delta0,Z0)
-	
-if __name__ == '__main__':
-	main()
-# fourier_descriptors = [Ak, ak, mu0]	#Ak is the amplitude of the forier series, and ak is the phase shift, mu0 = sum of 
-# triple = [L, delta0, Z0]	#repressents [length, initial tangential direction, position of starting point]
-
-# def curve_generator([Ak][][])
+		xcomplex = coordinates[0]*cmath.cos(coordinates[1])
+		ycomplex = coordinates[0]*cmath.sin(coordinates[1])
+		x.append(xcomplex.real)
+		y.append(ycomplex.real)
+	# plt.plot(x,y)
+	# plt.show()
+	return x,y
