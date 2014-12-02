@@ -1,28 +1,35 @@
 import Image
 import matplotlib.pyplot as plt
 
-def paint_canvas(x, y, width_in = 17, height_in = 11):
+def paint_canvas(x, y, width_in = 9, height_in = 9):
 	PPI = 250			#pixels per inch
 	width_px = PPI * width_in
 	height_px = PPI * height_in
-	xnew = [x + width_px-.5(max(x)-min(x)) for x in x]
-	ynew = [y + .15 * height_px for y in y]
-
-	canvas = Image.new("RGB",(width_px, height_px))
+	xnew = x
+	ynew = y
+	canvas = Image.new("RGB",(width_px+2, height_px+2))
 	pixels = canvas.load()
 
-	for i in range(len(x)):
-		pixels[x[i],y[i]] = (255, 255, 255)
+	for i in range(len(xnew)):
+		pixels[xnew[i]+1,ynew[i]+1] = (255, 255, 255)
+		pixels[xnew[i]+0,ynew[i]+1] = (255, 255, 255)
+		pixels[xnew[i]+2,ynew[i]+1] = (255, 255, 255)
+		pixels[xnew[i]+1,ynew[i]+0] = (255, 255, 255)
+		pixels[xnew[i]+0,ynew[i]+0] = (255, 255, 255)
+		pixels[xnew[i]+2,ynew[i]+0] = (255, 255, 255)
+		pixels[xnew[i]+1,ynew[i]+2] = (255, 255, 255)
+		pixels[xnew[i]+0,ynew[i]+2] = (255, 255, 255)
+		pixels[xnew[i]+2,ynew[i]+2] = (255, 255, 255)
 
 	canvas.save("images/test1.jpg")
 
-def map_coordinates(x,y, width_px = 17*250, height_px = 11*250):
+def map_coordinates(x,y, width_px = 9*250, height_px = 9*250):
 	xnew = []
 	ynew = []
 	for i in range(len(x)):
-		xnew.append(remap(x[i], min(x), max(x), 0, .6 * height_px))
+		xnew.append(remap(x[i], min(x), max(x), 0, width_px-1))
 		# xnew.append(remap(x[i], min(x), max(x), 0, .6 * height_px/(max(y) - min(y))))
-		ynew.append(remap(y[i], min(y), max(y), 0, .6 * height_px))
+		ynew.append(remap(y[i], min(y), max(y), 0, height_px-1))
 	return xnew,ynew
 
 def remap(value, low1, high1, low2, high2):

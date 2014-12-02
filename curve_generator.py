@@ -44,7 +44,7 @@ def draw_curves(Ak,ak,mu0,L,delta0,Z0):
 	"""
 	x = []
 	y = []
-	resolution = 10000	
+	resolution = 15000	
 	for l in numpy.arange(0,L,float(L)/resolution):
 		coordinates = curve_generator(l,Ak,ak,mu0,L,delta0,Z0)
 		xcomplex = coordinates[0]*cmath.cos(coordinates[1])

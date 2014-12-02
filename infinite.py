@@ -2,8 +2,8 @@ import curve_generator
 import write_png
 
 def main():
-    Ak = [1,2,3,2]
-    ak = [4,3.3,1,2]
+    Ak = [1,5,1.2,2.2]
+    ak = [2.5,3.3,.1,2]
     mu0 = curve_generator.calculate_mu0(Ak,ak)
 
     L = 10          #length of the line
