@@ -1,4 +1,4 @@
-def inputSignal(t,squishedlist, resolution = 10000):
+def inputSignal(t,squishedlist, resolution = 100000):
 	"""Finds the value of a signal at time t
 	"""
 	for i in range(int(t*resolution/(2*pi) - 5), int(t*resolution/(2*pi) + 5)):
