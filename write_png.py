@@ -1,25 +1,39 @@
-import Image
+import Image,math
 import matplotlib.pyplot as plt
+from bezier import Bezier
 
 def paint_canvas(x, y, width_in = 9, height_in = 9):
 	PPI = 250			#pixels per inch
 	width_px = PPI * width_in
 	height_px = PPI * height_in
-	xnew = x
-	ynew = y
-	canvas = Image.new("RGB",(width_px+2, height_px+2))
+	padding = 3 * PPI
+	canvas = Image.new("RGB",(width_px+2*padding, height_px+2*padding))
 	pixels = canvas.load()
 
+	point1hat = math.atan((y[0] - y[1])/((x[0] - x[1])))
+	point2hat = math.atan((y[-1] - y[-2])/((x[-1] - x[-2])))
+
+	print (x[0],y[0])
+	print point1hat
+	print (x[-1],y[-1])
+	print point2hat
+	closeIt = Bezier((x[0],y[0]), point1hat, (x[-1],y[-1]), point2hat, resolution = 100)
+	xnew = x + closeIt[0]
+	ynew = y + closeIt[1]
+
 	for i in range(len(xnew)):
-		pixels[xnew[i]+1,ynew[i]+1] = (255, 255, 255)
-		pixels[xnew[i]+0,ynew[i]+1] = (255, 255, 255)
-		pixels[xnew[i]+2,ynew[i]+1] = (255, 255, 255)
-		pixels[xnew[i]+1,ynew[i]+0] = (255, 255, 255)
-		pixels[xnew[i]+0,ynew[i]+0] = (255, 255, 255)
-		pixels[xnew[i]+2,ynew[i]+0] = (255, 255, 255)
-		pixels[xnew[i]+1,ynew[i]+2] = (255, 255, 255)
-		pixels[xnew[i]+0,ynew[i]+2] = (255, 255, 255)
-		pixels[xnew[i]+2,ynew[i]+2] = (255, 255, 255)
+		try:
+			pixels[xnew[i]+padding+0,ynew[i]+padding+0] = (255, 255, 255)
+			pixels[xnew[i]+padding-1,ynew[i]+padding+0] = (255, 255, 255)
+			pixels[xnew[i]+padding+1,ynew[i]+padding+0] = (255, 255, 255)
+			pixels[xnew[i]+padding+0,ynew[i]+padding-1] = (255, 255, 255)
+			pixels[xnew[i]+padding-1,ynew[i]+padding-1] = (255, 255, 255)
+			pixels[xnew[i]+padding+1,ynew[i]+padding-1] = (255, 255, 255)
+			pixels[xnew[i]+padding+0,ynew[i]+padding+1] = (255, 255, 255)
+			pixels[xnew[i]+padding-1,ynew[i]+padding+1] = (255, 255, 255)
+			pixels[xnew[i]+padding+1,ynew[i]+padding+1] = (255, 255, 255)
+		except IndexError:
+			pass
 
 	canvas.save("images/test1.jpg")
 
