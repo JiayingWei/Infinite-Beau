@@ -1,11 +1,12 @@
 import math,numpy
 import matplotlib.pyplot as plt
 
-def Bezier(point1, point1hat, point2, point2hat, resolution = 100):
-	handleLength = 100
+def Bezier(point1, point1hat, point2, point2hat):
+	handleLength = 300
 	handle1 = (handleLength*math.cos(point1hat) + point1[0], handleLength*math.sin(point1hat) + point1[1])
 	handle2 = (handleLength*math.cos(point2hat) + point2[0], handleLength*math.sin(point2hat) + point2[1])
 	distance = math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+	resolution = int(distance * 2)
 	trange = range(resolution)
 	h1walker = [[],[]]
 	h2walker = [[],[]]
@@ -33,7 +34,6 @@ def Bezier(point1, point1hat, point2, point2hat, resolution = 100):
 		phi2 = math.atan((h2walker[1][-1] - tiewalker[1][-1])/(h2walker[0][-1] - tiewalker[0][-1]))
 		if h2walker[0][-1] - tiewalker[0][-1] < 0:
 			phi2 = math.pi/2 + phi2 + math.pi/2
-		print phi2
 		l1wlength = math.sqrt((tiewalker[1][-1] - h1walker[1][-1])**2 + (tiewalker[0][-1] - h1walker[0][-1])**2)
 		l2wlength = math.sqrt((h2walker[1][-1] - tiewalker[1][-1])**2 + (h2walker[0][-1] - tiewalker[0][-1])**2)
 		l1walker[0].append(l1wlength*math.cos(phi1)*t/trange[-1] + h1walker[0][-1])
@@ -68,9 +68,11 @@ def Bezier(point1, point1hat, point2, point2hat, resolution = 100):
 
 	return curve
 
-point1 = (2249.0, 647.4099721530956)
-point1hat = -0.000642365473734
-point2 = (1882.9077874044585, 2032.0360834517242)
-point2hat = 0.209573311193
+# point1 = (2249.0, 647.4099721530956)
+# point1hat = -0.000642365473734
+# point2 = (1882.9077874044585, 2032.0360834517242)
+# point2hat = 0.209573311193
 
-closeIt = Bezier(point1, point1hat, point2 , point2hat, resolution = 100)
+# closeIt = Bezier(point1, point1hat, point2 , point2hat, resolution = 100)
+
+#point 1 is wrong/ to be specific handle1 is probably wrong...

@@ -6,20 +6,20 @@ def paint_canvas(x, y, width_in = 9, height_in = 9):
 	PPI = 250			#pixels per inch
 	width_px = PPI * width_in
 	height_px = PPI * height_in
-	padding = 3 * PPI
-	canvas = Image.new("RGB",(width_px+2*padding, height_px+2*padding))
-	pixels = canvas.load()
+	padding = 1
+	point1hat = math.atan((y[75] - y[0])/(x[75] - x[0]))
+	point2hat = math.atan((y[-1] - y[-75])/(x[-1] - x[-75]))
 
-	point1hat = math.atan((y[0] - y[1])/((x[0] - x[1])))
-	point2hat = math.atan((y[-1] - y[-2])/((x[-1] - x[-2])))
-
-	print (x[0],y[0])
-	print point1hat
-	print (x[-1],y[-1])
-	print point2hat
-	closeIt = Bezier((x[0],y[0]), point1hat, (x[-1],y[-1]), point2hat, resolution = 100)
+	closeIt = Bezier((x[0],y[0]), point1hat, (x[-1],y[-1]), point2hat)
 	xnew = x + closeIt[0]
 	ynew = y + closeIt[1]
+
+	print (x[1],y[1])
+	print (x[0],y[0]), point1hat, (x[-1],y[-1]), point2hat
+
+	canvas = Image.new("RGB",(int(round(max(xnew)- min(xnew)))+2*padding, int(round((max(ynew) - min(ynew))))+2*padding))
+	pixels = canvas.load()
+
 
 	for i in range(len(xnew)):
 		try:
@@ -35,7 +35,7 @@ def paint_canvas(x, y, width_in = 9, height_in = 9):
 		except IndexError:
 			pass
 
-	canvas.save("images/test1.jpg")
+	canvas.save("images/test1.png")
 
 def map_coordinates(x,y, width_px = 9*250, height_px = 9*250):
 	xnew = []
