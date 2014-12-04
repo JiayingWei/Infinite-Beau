@@ -8,8 +8,14 @@ def paint_canvas(x, y, width_in = 9, height_in = 9):
 	width_px = PPI * width_in
 	height_px = PPI * height_in
 	padding = 1
-	point1hat = math.atan((y[75] - y[0])/(x[75] - x[0]))
+	point1hat = math.atan((y[75] - y[0])/(x[75] - x[0])) + math.pi
+	if x[75] - x[0] < 0:
+		point1hat = math.pi + point1hat
 	point2hat = math.atan((y[-1] - y[-75])/(x[-1] - x[-75]))
+	if x[-1] - x[-75] < 0:
+		point2hat = math.pi + point2hat
+
+	print (x[0],y[0]), point1hat, (x[-1],y[-1]), point2hat
 
 	closeIt = Bezier((x[0],y[0]), point1hat, (x[-1],y[-1]), point2hat)
 	xnew = x + closeIt[0]
@@ -72,3 +78,22 @@ def remap(value, low1, high1, low2, high2):
 # 				if pixelgrid[n,N[1]-1] == (0,0,0):
 # 					Q.append((n,N[1]-1))
 # 	return
+
+# def flood(pixelgrid, (x,y), color = (255, 50, 255), visited=[]):
+# 	if pixelgrid[x,y] != (0,0,0):
+# 		return pixelgrid
+# 	else:
+# 		pixelgrid[x,y] = color
+# 		visited.append((x,y))
+# 		try:
+# 			if (x+0,y+1) not in visited:
+# 				flood(pixelgrid, (x+0,y+1), color)
+# 			if (x+0,y-1) not in visited:
+# 				flood(pixelgrid, (x+0,y-1), color)
+# 			if ((x+1,y+0)) not in visited:
+# 				flood(pixelgrid, (x+1,y+0), color)
+# 			if ((x-1,y+0)) not in visited:	
+# 				flood(pixelgrid, (x-1,y+0), color)
+
+# 		except:
+# 			pass
