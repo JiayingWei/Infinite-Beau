@@ -1,9 +1,12 @@
+from math import pi as pi
 import curve_generator
 import write_png
+import DFT
 
 def main():
-    Ak = [1,5,1.2,2.2]
-    ak = [2.5,3.3,1,2]
+    depth = 5
+    Ak = DFT.find_coeff(depth, 2*pi)[0]
+    ak = DFT.find_coeff(depth, 2*pi)[1]
     mu0 = curve_generator.calculate_mu0(Ak,ak)
 
     L = 10          #length of the line

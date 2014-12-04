@@ -47,10 +47,10 @@ def Bezier(point1, point1hat, point2, point2hat):
 		curve[0].append(clength*math.cos(angle)*t/trange[-1] + l1walker[0][-1])
 		curve[1].append(clength*math.sin(angle)*t/trange[-1] + l1walker[1][-1])
 
-	m = 98
-	plt.plot(h1walker[0][m],h1walker[1][m],'ko')
-	plt.plot(h2walker[0][m],h2walker[1][m],'ko')
-	plt.plot(tiewalker[0][m],tiewalker[1][m],'ko')
+	# m = 98
+	# plt.plot(h1walker[0][m],h1walker[1][m],'ko')
+	# plt.plot(h2walker[0][m],h2walker[1][m],'ko')
+	# plt.plot(tiewalker[0][m],tiewalker[1][m],'ko')
 
 
 	plt.plot(point1[0],point1[1],'ro')

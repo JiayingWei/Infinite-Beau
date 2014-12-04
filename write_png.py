@@ -33,7 +33,7 @@ def paint_canvas(x, y, width_in = 9, height_in = 9):
 		except IndexError:
 			pass
 
-	pixels = flood(pixels, (1000,1000))
+	# pixels = flood(pixels, (1000,1000))
 
 	canvas.save("images/test1.png")
 
@@ -52,21 +52,21 @@ def remap(value, low1, high1, low2, high2):
 	"""
 	return low2 + (value - low1) * (high2 - low2) / (high1 - low1)
 
-def flood(pixelgrid, (x,y), color = (255, 50, 255), visited=[]):
-	if pixelgrid[x,y] != (0,0,0):
-		return pixelgrid
-	else:
-		pixelgrid[x,y] = color
-		visited.append((x,y))
-		try:
-			if (x+0,y+1) not in visited:
-				flood(pixelgrid, (x+0,y+1), color)
-			if (x+0,y-1) not in visited:
-				flood(pixelgrid, (x+0,y-1), color)
-			if ((x+1,y+0)) not in visited:
-				flood(pixelgrid, (x+1,y+0), color)
-			if ((x-1,y+0)) not in visited:	
-				flood(pixelgrid, (x-1,y+0), color)
+# def flood(pixelgrid, (x,y), color = (255, 50, 255), visited=[]):
+# 	if pixelgrid[x,y] != (0,0,0):
+# 		return pixelgrid
+# 	else:
+# 		pixelgrid[x,y] = color
+# 		visited.append((x,y))
+# 		try:
+# 			if (x+0,y+1) not in visited:
+# 				flood(pixelgrid, (x+0,y+1), color)
+# 			if (x+0,y-1) not in visited:
+# 				flood(pixelgrid, (x+0,y-1), color)
+# 			if ((x+1,y+0)) not in visited:
+# 				flood(pixelgrid, (x+1,y+0), color)
+# 			if ((x-1,y+0)) not in visited:	
+# 				flood(pixelgrid, (x-1,y+0), color)
 
-		except:
-			pass
+# 		except:
+# 			pass
