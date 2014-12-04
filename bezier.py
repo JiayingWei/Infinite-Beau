@@ -2,11 +2,11 @@ import math,numpy
 import matplotlib.pyplot as plt
 
 def Bezier(point1, point1hat, point2, point2hat):
-	handleLength = 300
+	handleLength = 20
 	handle1 = (handleLength*math.cos(point1hat) + point1[0], handleLength*math.sin(point1hat) + point1[1])
 	handle2 = (handleLength*math.cos(point2hat) + point2[0], handleLength*math.sin(point2hat) + point2[1])
 	distance = math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
-	resolution = int(distance * 2)
+	resolution = int(distance * 10)
 	trange = range(resolution)
 	h1walker = [[],[]]
 	h2walker = [[],[]]
@@ -55,18 +55,18 @@ def Bezier(point1, point1hat, point2, point2hat):
 	# plt.plot(tiewalker[0][m],tiewalker[1][m],'ko')
 
 
-	plt.plot(point1[0],point1[1],'ro')
-	plt.plot(point2[0],point2[1],'bo')
-	plt.plot(handle1[0],handle1[1],'go')
-	plt.plot(handle2[0],handle2[1],'yo')
-	plt.plot(tiewalker[0],tiewalker[1],'m')
+	# plt.plot(point1[0],point1[1],'ro')
+	# plt.plot(point2[0],point2[1],'bo')
+	# plt.plot(handle1[0],handle1[1],'go')
+	# plt.plot(handle2[0],handle2[1],'yo')
+	# plt.plot(tiewalker[0],tiewalker[1],'m')
 
-	plt.plot(h1walker[0],h1walker[1],'g-')
-	plt.plot(h2walker[0],h2walker[1],'y-')
-	plt.plot(l1walker[0],l1walker[1],'k')
-	plt.plot(l2walker[0],l2walker[1],'c')
-	plt.plot(curve[0],curve[1],'r-')
-	plt.show()
+	# plt.plot(h1walker[0],h1walker[1],'g-')
+	# plt.plot(h2walker[0],h2walker[1],'y-')
+	# plt.plot(l1walker[0],l1walker[1],'k')
+	# plt.plot(l2walker[0],l2walker[1],'c')
+	# plt.plot(curve[0],curve[1],'r-')
+	# plt.show()
 
 	return curve
 

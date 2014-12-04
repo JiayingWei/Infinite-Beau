@@ -2,16 +2,13 @@ import Image,math,sys
 import matplotlib.pyplot as plt
 from bezier import Bezier
 
-def paint_canvas(x, y, width_in = 9, height_in = 9):
-	sys.setrecursionlimit(10000)
-	PPI = 250			#pixels per inch
-	width_px = PPI * width_in
-	height_px = PPI * height_in
+def paint_canvas(x, y):
+	sys.setrecursionlimit(15000)
 	padding = 1
-	point1hat = math.atan((y[75] - y[0])/(x[75] - x[0])) + math.pi
+	point1hat = math.atan((y[3] - y[0])/(x[3] - x[0])) + math.pi
 	if x[75] - x[0] < 0:
 		point1hat = math.pi + point1hat
-	point2hat = math.atan((y[-1] - y[-75])/(x[-1] - x[-75]))
+	point2hat = math.atan((y[-1] - y[-3])/(x[-1] - x[-3]))
 	if x[-1] - x[-75] < 0:
 		point2hat = math.pi + point2hat
 
@@ -28,22 +25,22 @@ def paint_canvas(x, y, width_in = 9, height_in = 9):
 	for i in range(len(xnew)):
 		try:
 			pixels[xnew[i]+padding+0,ynew[i]+padding+0] = (255, 255, 255)
-			pixels[xnew[i]+padding-1,ynew[i]+padding+0] = (255, 255, 255)
-			pixels[xnew[i]+padding+1,ynew[i]+padding+0] = (255, 255, 255)
-			pixels[xnew[i]+padding+0,ynew[i]+padding-1] = (255, 255, 255)
-			pixels[xnew[i]+padding-1,ynew[i]+padding-1] = (255, 255, 255)
-			pixels[xnew[i]+padding+1,ynew[i]+padding-1] = (255, 255, 255)
-			pixels[xnew[i]+padding+0,ynew[i]+padding+1] = (255, 255, 255)
-			pixels[xnew[i]+padding-1,ynew[i]+padding+1] = (255, 255, 255)
-			pixels[xnew[i]+padding+1,ynew[i]+padding+1] = (255, 255, 255)
+			# pixels[xnew[i]+padding-1,ynew[i]+padding+0] = (255, 255, 255)
+			# pixels[xnew[i]+padding+1,ynew[i]+padding+0] = (255, 255, 255)
+			# pixels[xnew[i]+padding+0,ynew[i]+padding-1] = (255, 255, 255)
+			# pixels[xnew[i]+padding-1,ynew[i]+padding-1] = (255, 255, 255)
+			# pixels[xnew[i]+padding+1,ynew[i]+padding-1] = (255, 255, 255)
+			# pixels[xnew[i]+padding+0,ynew[i]+padding+1] = (255, 255, 255)
+			# pixels[xnew[i]+padding-1,ynew[i]+padding+1] = (255, 255, 255)
+			# pixels[xnew[i]+padding+1,ynew[i]+padding+1] = (255, 255, 255)
 		except IndexError:
 			pass
 
 	# pixels = flood(pixels, (1000,1000))
-
+	canvas = canvas.resize((1000,1000), Image.NEAREST)
 	canvas.save("images/test1.png")
 
-def map_coordinates(x,y, width_px = 9*250, height_px = 9*250):
+def map_coordinates(x,y, width_px = 100, height_px = 100):
 	xnew = []
 	ynew = []
 	for i in range(len(x)):
@@ -58,42 +55,3 @@ def remap(value, low1, high1, low2, high2):
 	"""
 	return low2 + (value - low1) * (high2 - low2) / (high1 - low1)
 
-# def flood(pixelgrid, (x,y), color = (255, 50, 255)):
-# 	Q = []
-# 	if pixelgrid[x,y] != (0,0,0):
-# 		return
-# 	Q.append((x,y))
-# 	for N in Q:
-# 		if pixelgrid[N[0], N[1]] == (0,0,0):
-# 			w = N
-# 			e = N
-# 			while pixelgrid[w[0]-1, w[1]] == (0,0,0):
-# 				w = (w[0]-1, w[1])
-# 			while pixelgrid[e[0]+1, e[1]] == (0,0,0):
-# 				e = (e[0]+1, e[1])
-# 			for n in range(w[0],e[0]):
-# 				pixelgrid[n,N[1]] == color
-# 				if pixelgrid[n,N[1]+1] == (0,0,0):
-# 					Q.append((n,N[1]+1))
-# 				if pixelgrid[n,N[1]-1] == (0,0,0):
-# 					Q.append((n,N[1]-1))
-# 	return
-
-# def flood(pixelgrid, (x,y), color = (255, 50, 255), visited=[]):
-# 	if pixelgrid[x,y] != (0,0,0):
-# 		return pixelgrid
-# 	else:
-# 		pixelgrid[x,y] = color
-# 		visited.append((x,y))
-# 		try:
-# 			if (x+0,y+1) not in visited:
-# 				flood(pixelgrid, (x+0,y+1), color)
-# 			if (x+0,y-1) not in visited:
-# 				flood(pixelgrid, (x+0,y-1), color)
-# 			if ((x+1,y+0)) not in visited:
-# 				flood(pixelgrid, (x+1,y+0), color)
-# 			if ((x-1,y+0)) not in visited:	
-# 				flood(pixelgrid, (x-1,y+0), color)
-
-# 		except:
-# 			pass
