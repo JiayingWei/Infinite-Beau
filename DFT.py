@@ -7,7 +7,7 @@ from math import cos as cos
 from math import pi as pi
 
 def input_function(x):
-	afunction = sin(x) + cos(sin(x*cos(x)))
+	afunction = sin(x * cos(x)) + cos(x * sin(x))
 	return afunction
 
 def find_coeff(depth, period):
