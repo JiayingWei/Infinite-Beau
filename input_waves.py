@@ -1,4 +1,9 @@
-def inputSignal(t,squishedlist, resolution = 100000):
+import wave
+from math import pi as pi
+from pylab import fromstring
+import matplotlib.pyplot as plt
+
+def inputSignal(t,squishedlist, resolution = 10000):
 	"""Finds the value of a signal at time t
 	"""
 	for i in range(int(t*resolution/(2*pi) - 5), int(t*resolution/(2*pi) + 5)):

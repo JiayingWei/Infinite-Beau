@@ -14,7 +14,6 @@ def sin(x):
 def cos(x):
     return math.cos(x)
 
-
 pi = math.pi
 period = pi
 w0 = 2*pi/period #fundamental frequency
@@ -47,9 +46,4 @@ def Sigma(n,t):
         sigma = constants[n]*sin(n*w0*t)+constants[n+1]*cos(n*w0*t)+ Sigma(n,t)
         return sigma
     
-print Sigma(3,1)    
-    
-    
-    
-    
-    
+print Sigma(3,1)      
