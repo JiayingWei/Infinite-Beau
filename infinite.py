@@ -1,12 +1,14 @@
 from math import pi as pi
+
 import curve_generator
 import write_png
 import DFT
 
 def main():
+    DFT.signal_Assignment = DFT.signal_dictionary()
     depth = 5
-    Ak = DFT.find_coeff(depth, 2*pi)[0]
-    ak = DFT.find_coeff(depth, 2*pi)[1]
+    Ak = DFT.find_coeff(depth)[0]
+    ak = DFT.find_coeff(depth)[1]
     mu0 = curve_generator.calculate_mu0(Ak,ak)
 
     L = 10          #length of the line
