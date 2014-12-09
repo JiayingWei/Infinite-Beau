@@ -1,5 +1,5 @@
 import Image,math,sys,cv2
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 from bezier import Bezier
 
@@ -24,7 +24,7 @@ def paint_canvas(x, y):
 	for i in range(len(xnew)):
 		pixels[xnew[i]+padding+0, ynew[i]+padding+0] = (255, 255, 255)
 
-	imagepath = "images/test1.png"
+	imagepath = "images/techtest.png"
 	canvas.save(imagepath)
 	centers = findZones(imagepath)
 

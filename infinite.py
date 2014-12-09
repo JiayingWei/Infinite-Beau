@@ -20,7 +20,7 @@ def main():
     (x2,y2) = write_png.map_coordinates(x1,y1)
 
     write_png.paint_canvas(x2,y2)
-    print 'lol'
+    print 'DONE'
 
 
 if __name__ == '__main__':
