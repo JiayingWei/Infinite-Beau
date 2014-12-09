@@ -30,8 +30,6 @@ def normSignal(waveform):
 	for i in range(resolution):
 		squished.append([i*2*pi/resolution, float(waveform[i * step])])
 		squished[i][1] = remap(squished[i][1], minimum, maximum, -1, 1)
-		plt.plot(i,squished[i][1])
-	plt.show()
 	return squished
 
 

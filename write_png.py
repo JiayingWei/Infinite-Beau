@@ -29,6 +29,7 @@ def paint_canvas(x, y):
 	centers = findZones(imagepath)
 
 	for i in range(len(centers)):
+		print centers[1],type(centers[i][0]),type(centers[i][1])
 		flood(pixels,centers[i], visited = [])
 
 	canvas = canvas.resize((1000,1000), Image.NEAREST)
@@ -75,12 +76,21 @@ def findZones(imagepath):
 	contours, hierarchy = cv2.findContours(imgray,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
 	M = []	#moments
 	centers = []
+	x = []
+	y = []
 	for i in range(len(contours)):
-		M.append(cv2.moments(contours[i]))
-		try:
-			centoidx = int(M[i]['m10']/M[i]['m00'])
-			centoidy = int(M[i]['m01']/M[i]['m00'])
-			centers.append((centoidx,centoidy))
-		except:
-			pass
+		for j in range(len(contours[i])):
+			x.append(contours[i][j][0][0])
+			y.append(contours[i][j][0][1])
+		leftmostX = min(x)
+		centers.append((int(leftmostX + 1), int(y[x.index(leftmostX)])))
+		x = []
+		y = []
+	# 	print contours[i][1]
+	# 	# M.append(cv2.moments(contours[i]))
+	# 	# centoidx = int(M[i]['m10']/M[i]['m00'])
+	# 	# centoidy = int(M[i]['m01']/M[i]['m00'])
+	# 	# centers.append((centoidx,centoidy))
 	return centers
+
+# print findZones('images/techtest.png')

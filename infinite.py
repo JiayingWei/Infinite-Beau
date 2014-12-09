@@ -20,8 +20,10 @@ def main():
     (x2,y2) = write_png.map_coordinates(x1,y1)
 
     write_png.paint_canvas(x2,y2)
-    print 'DONE'
+    print 'Je suis fini'
 
 
 if __name__ == '__main__':
     main()
+    
+#draw contour
