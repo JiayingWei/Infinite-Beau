@@ -1,9 +1,11 @@
 import Image,math,sys,cv2
-# import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 from bezier import Bezier
 
-def paint_canvas(x, y):
+def paint_canvas(x, y, colors):
+	"""creates the png file and colors colors it
+	"""
 	sys.setrecursionlimit(15000)
 	padding = 1
 	point1hat = math.atan((y[3] - y[0])/(x[3] - x[0])) + math.pi
@@ -28,14 +30,18 @@ def paint_canvas(x, y):
 	canvas.save(imagepath)
 	centers = findZones(imagepath)
 
+	# print centers
+
 	for i in range(len(centers)):
-		print centers[1],type(centers[i][0]),type(centers[i][1])
-		flood(pixels,centers[i], visited = [])
+		flood(pixels,centers[i], color = colors[i%len(colors)], visited = [])
+		print colors[i%len(colors)]
 
 	canvas = canvas.resize((1000,1000), Image.NEAREST)
 	canvas.save(imagepath)	
 
 def map_coordinates(x,y, width_px = 100, height_px = 100):
+	""" Maps the function to the pixel grids
+	"""
 	xnew = []
 	ynew = []
 	for i in range(len(x)):
@@ -50,6 +56,8 @@ def remap(value, low1, high1, low2, high2):
 	return low2 + (value - low1) * (high2 - low2) / (high1 - low1)
 
 def flood(pixelgrid, (x,y), color = (255, 50, 255), background = (0,0,0), visited=[]):
+	""" Recursively fills the closed contour starting at point (x,y)
+	"""
 	if pixelgrid[x,y] != background:
 		return
 	else:
@@ -68,7 +76,7 @@ def flood(pixelgrid, (x,y), color = (255, 50, 255), background = (0,0,0), visite
 			pass
 
 def findZones(imagepath):
-	""" Findes the centers of each of the closed contours in the image
+	""" Finds the centers of each of the closed contours in the image
 	"""
 	image = cv2.imread(imagepath)
 	imgray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
@@ -78,6 +86,14 @@ def findZones(imagepath):
 	centers = []
 	x = []
 	y = []
+	
+	# cv2.imshow('blarg',imgray)
+	# # cv2.drawContours(image,contours, 0, (0,255,0),-1)
+	# # cv2.drawContours(image,contours, 1, (255,0,0),-1)	
+	# # cv2.imshow('blarg',image)
+	# cv2.waitKey(0)
+	# cv2.destroyAllWindows
+
 	for i in range(len(contours)):
 		for j in range(len(contours[i])):
 			x.append(contours[i][j][0][0])
@@ -86,11 +102,22 @@ def findZones(imagepath):
 		centers.append((int(leftmostX + 1), int(y[x.index(leftmostX)])))
 		x = []
 		y = []
-	# 	print contours[i][1]
-	# 	# M.append(cv2.moments(contours[i]))
-	# 	# centoidx = int(M[i]['m10']/M[i]['m00'])
-	# 	# centoidy = int(M[i]['m01']/M[i]['m00'])
-	# 	# centers.append((centoidx,centoidy))
 	return centers
 
-# print findZones('images/techtest.png')
+def pickColor(Ak):
+	"""Selects the colors of the final piece based on the input amplitudes
+	"""
+	red = (255,50,50)
+	orange = (255,153,50)
+	yellow = (255,255,50)
+	green = (153,255,50)
+	blue = (50,50,255)
+	purple = (153,50,255)
+	colors = [red,orange,yellow,green,blue,purple]
+	picked = []
+
+	for i in range(len(Ak)):
+		picked.append(colors[int(remap(Ak[i], 0, max(Ak), 0, 5))])
+
+	return picked
+

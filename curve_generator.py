@@ -5,10 +5,9 @@ from math import sin as sin
 from math import cos as cos
 from math import pi as pi
 
-"""How is x and y different? It seems like the only way x and y are different are calculated from the Z0 initial starting conditions
-"""
-
 def calculate_mu0(Ak, ak):
+	"""Calculates the mu0 coefficiant from the amplitude and phase terms
+	"""
 	mu0 = []
 	for i in range(len(Ak)):
 		mu0.append(Ak[i] * cos(ak[i]))
@@ -51,6 +50,4 @@ def draw_curves(Ak,ak,mu0,L,delta0,Z0):
 		ycomplex = coordinates[0]*cmath.sin(coordinates[1])
 		x.append(xcomplex.real)
 		y.append(ycomplex.real)
-	# plt.plot(x,y)
-	# plt.show()
 	return x,y

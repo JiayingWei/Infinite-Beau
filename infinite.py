@@ -10,6 +10,8 @@ def main():
     Ak = DFT.find_coeff(depth)[0]
     ak = DFT.find_coeff(depth)[1]
     mu0 = curve_generator.calculate_mu0(Ak,ak)
+    
+    colors = write_png.pickColor(Ak)
 
     L = 10          #length of the line
     delta0 = 1      #no idea what units this should be in
@@ -19,11 +21,11 @@ def main():
 
     (x2,y2) = write_png.map_coordinates(x1,y1)
 
-    write_png.paint_canvas(x2,y2)
+    write_png.paint_canvas(x2,y2, colors)
     print 'Je suis fini'
 
 
 if __name__ == '__main__':
     main()
-    
+
 #draw contour
