@@ -10,7 +10,7 @@ def main():
     Ak = DFT.find_coeff(depth)[0]
     ak = DFT.find_coeff(depth)[1]
     mu0 = curve_generator.calculate_mu0(Ak,ak)
-    
+
     colors = write_png.pickColor(Ak)
 
     L = 10          #length of the line
@@ -27,5 +27,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-#draw contour
