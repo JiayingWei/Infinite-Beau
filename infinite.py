@@ -3,9 +3,11 @@ from math import pi as pi
 import curve_generator
 import write_png
 import DFT
+from audio_record import record 
 
 def main():
-    DFT.signal_Assignment = DFT.signal_dictionary()
+    record(7, "Audio/recordtest.wav")
+    DFT.signal_Assignment = DFT.signal_dictionary("Audio/recordtest.wav")
     depth = 5
     Ak = DFT.find_coeff(depth)[0]
     ak = DFT.find_coeff(depth)[1]
