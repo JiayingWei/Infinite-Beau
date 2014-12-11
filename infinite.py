@@ -1,14 +1,12 @@
-from math import pi as pi
-
 import curve_generator
 import write_png
 import DFT
 from audio_record import record 
 
 def main():
-    record(7, "Audio/recordtest.wav")
+    # record(7, "Audio/recordtest.wav")
     DFT.signal_Assignment = DFT.signal_dictionary("Audio/recordtest.wav")
-    depth = 5
+    depth = 3
     Ak = DFT.find_coeff(depth)[0]
     ak = DFT.find_coeff(depth)[1]
     mu0 = curve_generator.calculate_mu0(Ak,ak)
@@ -24,7 +22,9 @@ def main():
     (x2,y2) = write_png.map_coordinates(x1,y1)
 
     write_png.paint_canvas(x2,y2, colors)
-    print 'Je suis fini'
+    # print 'Je suis fini'
+
+    return False
 
 
 if __name__ == '__main__':

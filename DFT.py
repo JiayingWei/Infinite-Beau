@@ -29,7 +29,7 @@ def input_function(given_x):
 			return signal_Assignment[keys[i]]
 
 	
-def signal_dictionary():
+def signal_dictionary(music_filename):
 	""" Create a dictionary of the corresponding x and y
 	values of the normalized input wave signal
 	"""
@@ -37,7 +37,7 @@ def signal_dictionary():
 	y = []
 	assign_points = {}
 
-	signal = input_waves.WAVtoSignal("comebackhome.wav")
+	signal = input_waves.WAVtoSignal(music_filename)
 	for i in range(len(signal)):
 		x = signal[i][0]
 		y = signal[i][1]

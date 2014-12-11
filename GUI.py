@@ -1,4 +1,8 @@
+from multiprocessing import Process
+
 import pygame
+import audio_record
+import infinite
 
 class Model:
 	"""Encodes model state
@@ -36,7 +40,7 @@ class View:
 		self.screen.blit(recPic,((self.model.width - recPic.get_width())/2 , (self.model.height - recPic.get_height())/5))
 
 		pygame.display.update()
-		pygame.time.wait(1000)
+		# pygame.time.wait(1000)
 
 		five = pygame.image.load('GUIimages/five.jpg')
 		four = pygame.image.load('GUIimages/four.jpg')
@@ -51,7 +55,8 @@ class View:
 			pygame.display.update()
 			pygame.time.wait(1000)
 
-		self.drawLoading()
+		self.model.state = 'loading'
+		# self.drawLoading()
 
 	def drawLoading(self):
 		self.model.state = 'loading'
@@ -63,10 +68,18 @@ class View:
 
 		loading = (dot, dotdot, dotdotdot)
 
+		# process1 = Process(target = infinite.main())
+		# process1.start()
+
+		# def loadingscreen():
+			# while infinite != False:
 		for dot in loading:
 			self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
 			pygame.display.update()
 			pygame.time.wait(1000)
+
+		# process2 = Process(target = loadingscreen)
+		# process2.start()
 
 		pygame.time.wait(1000)
 
@@ -111,13 +124,21 @@ if __name__ == '__main__':
 				if event.key == pygame.K_ESCAPE:
 					running = False
 			if event.type == pygame.MOUSEBUTTONDOWN and model.state == 'prompt':
-				view.drawRecording()
+				process1 = Process(target = view.drawRecording)
+				process1.start()
+
+				process2 = Process(target = audio_record.record(5, "Audio/recordtest.wav"))
+				process2.start()
+
 			if event.type == pygame.MOUSEBUTTONDOWN and model.state == 'complete':
 				(mousex,mousey) = pygame.mouse.get_pos()
 				if mousex > model.width - 150  and mousex < model.width - 50 and mousey > model.height - 150 and mousey < model.height - 50:
 					view.drawPrompt()
-		if model.state == 'loading':
-			view.drawLoading()
+		# if model.state == 'loading':
+		# 		view.drawLoading()
+
+
+
 		#if the image has finished processing then
 		#model.state = 'complete'
 
