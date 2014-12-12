@@ -55,8 +55,7 @@ class View:
 			pygame.display.update()
 			pygame.time.wait(1000)
 
-		self.model.state = 'loading'
-		# self.drawLoading()
+		self.drawLoading()
 
 	def drawLoading(self):
 		self.model.state = 'loading'
@@ -68,22 +67,27 @@ class View:
 
 		loading = (dot, dotdot, dotdotdot)
 
-		# process1 = Process(target = infinite.main())
-		# process1.start()
+		process1 = Process(target = infinite.main)
+		process1.start()
 
-		# def loadingscreen():
-			# while infinite != False:
-		for dot in loading:
-			self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
-			pygame.display.update()
-			pygame.time.wait(1000)
+		def loadingscreen():
+			running = 1
+			while running:
+				for dot in loading:
+					self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
+					pygame.display.update()
+					pygame.time.wait(1000)
 
-		# process2 = Process(target = loadingscreen)
-		# process2.start()
+
+		process2 = Process(target = loadingscreen)
+		process2.start()
+
 
 		pygame.time.wait(1000)
 
-		self.drawComplete()
+		if infinite.main() == False:
+			loadingscreen. running = 0
+			self.drawComplete()
 
 	def drawComplete(self):
 		self.model.state = 'complete'
@@ -97,6 +101,7 @@ class View:
 		self.screen.blit(masterpiece,((self.model.width - masterpiece.get_width())/2 , (self.model.height - masterpiece.get_height())/1.5))
 		self.screen.blit(redo,(self.model.width - 150 , self.model.height - 150))
 		pygame.display.update()
+		# return False
 
 class Controller:
 	"""Encodes Controller
