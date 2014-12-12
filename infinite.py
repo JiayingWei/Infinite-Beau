@@ -22,7 +22,7 @@ def main():
     (x2,y2) = write_png.map_coordinates(x1,y1)
 
     write_png.paint_canvas(x2,y2, colors)
-    # print 'Je suis fini'
+    print 'Je suis fini'
 
     return False
 

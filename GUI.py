@@ -68,11 +68,10 @@ class View:
 
 		loading = (dot, dotdot, dotdotdot)
 
-		if infinite.main() != False:
-			for dot in loading:
-				self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
-				pygame.display.update()
-				pygame.time.wait(1000)
+		for dot in loading:
+			self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
+			pygame.display.update()
+			pygame.time.wait(1000)
 
 		if infinite.main() == False:
 			pygame.time.wait(1000)

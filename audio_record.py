@@ -25,4 +25,7 @@ def record(duration, filename, rate = 44100, channels = 2, aud_format = pyaudio.
     wf.setframerate(rate)
     wf.writeframes(b''.join(frames))
     wf.close()
+    # return False
 
+
+# record(5, "Audio/recordtest.wav")
