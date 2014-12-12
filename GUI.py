@@ -32,9 +32,7 @@ class View:
 		self.screen.blit(micPic,((self.model.width - micPic.get_width())/2 , (self.model.height - micPic.get_height())/2))
 		pygame.display.update()
 
-	def drawRecording(self):
-		self.model.state = 'recording'
-		
+	def drawRecording(self):		
 		self.screen.fill(self.model.background)
 		recPic = pygame.image.load('GUIimages/recording.jpg')
 		self.screen.blit(recPic,((self.model.width - recPic.get_width())/2 , (self.model.height - recPic.get_height())/5))
@@ -55,6 +53,9 @@ class View:
 			pygame.display.update()
 			pygame.time.wait(1000)
 
+		self.model.state = 'loading'
+		# print 'countdown ended'
+
 		self.drawLoading()
 
 	def drawLoading(self):
@@ -67,26 +68,15 @@ class View:
 
 		loading = (dot, dotdot, dotdotdot)
 
-		process1 = Process(target = infinite.main)
-		process1.start()
-
-		def loadingscreen():
-			running = 1
-			while running:
-				for dot in loading:
-					self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
-					pygame.display.update()
-					pygame.time.wait(1000)
-
-
-		process2 = Process(target = loadingscreen)
-		process2.start()
-
-
-		pygame.time.wait(1000)
+		if infinite.main() != False:
+			for dot in loading:
+				self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
+				pygame.display.update()
+				pygame.time.wait(1000)
 
 		if infinite.main() == False:
-			loadingscreen. running = 0
+			pygame.time.wait(1000)
+
 			self.drawComplete()
 
 	def drawComplete(self):
@@ -101,7 +91,6 @@ class View:
 		self.screen.blit(masterpiece,((self.model.width - masterpiece.get_width())/2 , (self.model.height - masterpiece.get_height())/1.5))
 		self.screen.blit(redo,(self.model.width - 150 , self.model.height - 150))
 		pygame.display.update()
-		# return False
 
 class Controller:
 	"""Encodes Controller
@@ -129,6 +118,7 @@ if __name__ == '__main__':
 				if event.key == pygame.K_ESCAPE:
 					running = False
 			if event.type == pygame.MOUSEBUTTONDOWN and model.state == 'prompt':
+				model.state = 'recording'
 				process1 = Process(target = view.drawRecording)
 				process1.start()
 
@@ -140,7 +130,22 @@ if __name__ == '__main__':
 				if mousex > model.width - 150  and mousex < model.width - 50 and mousey > model.height - 150 and mousey < model.height - 50:
 					view.drawPrompt()
 		# if model.state == 'loading':
-		# 		view.drawLoading()
+			# print model.state
+		# print model.state
+
+		if model.state == 'loading':
+			print 'duckjls'
+			process3 = Process(target = view.drawLoading)
+			process3.start()
+
+			process4 = Process(target = infinite.main)
+			process4.start()
+
+
+
+
+			# view.drawLoading()
+
 
 
 
