@@ -1,5 +1,4 @@
 from multiprocessing import Process
-
 import pygame
 import audio_record
 import infinite
@@ -18,11 +17,12 @@ class Model:
 class View:
 	"""Encodes view state
 	"""
-	def __init__(self, model, controller):
+	def __init__(self, model):
 		self.model = model
-		self.controller = controller
 
 	def drawPrompt(self):
+		"""Displays the initial infinite beau screen
+		"""
 		self.model.state = 'prompt'
 
 		self.screen = pygame.display.set_mode((self.model.width, self.model.height),pygame.FULLSCREEN)
@@ -32,13 +32,14 @@ class View:
 		self.screen.blit(micPic,((self.model.width - micPic.get_width())/2 , (self.model.height - micPic.get_height())/2))
 		pygame.display.update()
 
-	def drawRecording(self):		
+	def drawRecording(self):
+		"""Displays the countdown and recording screen also starts recording
+		"""
 		self.screen.fill(self.model.background)
 		recPic = pygame.image.load('GUIimages/recording.jpg')
 		self.screen.blit(recPic,((self.model.width - recPic.get_width())/2 , (self.model.height - recPic.get_height())/5))
 
 		pygame.display.update()
-		# pygame.time.wait(1000)
 
 		five = pygame.image.load('GUIimages/five.jpg')
 		four = pygame.image.load('GUIimages/four.jpg')
@@ -54,32 +55,31 @@ class View:
 			pygame.time.wait(1000)
 
 		self.model.state = 'loading'
-		# print 'countdown ended'
-
-		self.drawLoading()
 
 	def drawLoading(self):
-		self.model.state = 'loading'
-
+		"""Displays the loading screen while infinite.py processes the waveform and turns it into a PNG file
+		"""
 		self.screen.fill(self.model.background)
 		dot = pygame.image.load('GUIimages/dot.jpg')
 		dotdot = pygame.image.load('GUIimages/dotdot.jpg')
 		dotdotdot = pygame.image.load('GUIimages/dotdotdot.jpg')
 
 		loading = (dot, dotdot, dotdotdot)
+		calculating = Process(target = infinite.main)
+		calculating.start()
 
-		for dot in loading:
-			self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
-			pygame.display.update()
-			pygame.time.wait(1000)
+		while calculating.is_alive() == True:
+			for dot in loading:
+				self.screen.blit(dot,((self.model.width - dot.get_width())/2 , (self.model.height - dot.get_height())/2))
+				pygame.display.update()
+				pygame.time.wait(1000)
 
-		if infinite.main() == False:
-			pygame.time.wait(1000)
-
-			self.drawComplete()
+		self.model.state = 'complete'
+		view.drawComplete()
 
 	def drawComplete(self):
-		self.model.state = 'complete'
+		"""Displays the finished interperated PNG from the waveform
+		"""
 
 		self.screen.fill((0,0,0))
 		masterpiece = pygame.image.load('images/techtest.png')
@@ -91,23 +91,17 @@ class View:
 		self.screen.blit(redo,(self.model.width - 150 , self.model.height - 150))
 		pygame.display.update()
 
-class Controller:
-	"""Encodes Controller
-	"""
-	def __init__(self,model):
-		self.model = model
-
-
 if __name__ == '__main__':
 	pygame.init()
 
-
 	model = Model()
-	controller = Controller(model)
-	view = View(model,controller)
+	view = View(model)
 
 	running = True
 	view.drawPrompt()
+
+	recording = Process(target = audio_record.record(5, "Audio/recordtest.wav"))
+	counting = Process(target = view.drawRecording())
 
 	while running:
 		for event in pygame.event.get():
@@ -118,37 +112,13 @@ if __name__ == '__main__':
 					running = False
 			if event.type == pygame.MOUSEBUTTONDOWN and model.state == 'prompt':
 				model.state = 'recording'
-				process1 = Process(target = view.drawRecording)
-				process1.start()
-
-				process2 = Process(target = audio_record.record(5, "Audio/recordtest.wav"))
-				process2.start()
-
+				recording.start()
+				counting.start()
 			if event.type == pygame.MOUSEBUTTONDOWN and model.state == 'complete':
 				(mousex,mousey) = pygame.mouse.get_pos()
 				if mousex > model.width - 150  and mousex < model.width - 50 and mousey > model.height - 150 and mousey < model.height - 50:
+					model.state = 'prompt'
 					view.drawPrompt()
-		# if model.state == 'loading':
-			# print model.state
-		# print model.state
-
 		if model.state == 'loading':
-			print 'duckjls'
-			process3 = Process(target = view.drawLoading)
-			process3.start()
-
-			process4 = Process(target = infinite.main)
-			process4.start()
-
-
-
-
-			# view.drawLoading()
-
-
-
-
-		#if the image has finished processing then
-		#model.state = 'complete'
-
+			view.drawLoading()
 	pygame.quit()

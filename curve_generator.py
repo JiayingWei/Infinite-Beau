@@ -1,5 +1,4 @@
 from scipy.integrate import quad
-# import matplotlib.pyplot as plt
 import cmath, numpy
 from math import sin as sin
 from math import cos as cos

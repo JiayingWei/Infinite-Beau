@@ -1,7 +1,6 @@
 import Image,math,sys,cv2
-#import matplotlib.pyplot as plt
 import numpy as np
-from bezier import Bezier
+from bezier import bezier
 
 def paint_canvas(x, y, colors):
 	"""creates the png file and colors colors it
@@ -16,7 +15,7 @@ def paint_canvas(x, y, colors):
 	if x[-1] - x[-75] < 0:
 		point2hat = math.pi + point2hat
 
-	closeIt = Bezier((x[0],y[0]), point1hat, (x[-1],y[-1]), point2hat)
+	closeIt = bezier((x[0],y[0]), point1hat, (x[-1],y[-1]), point2hat)	#calls bezier function in order to close the open loop
 	xnew = x + closeIt[0]
 	ynew = y + closeIt[1]
 
@@ -30,11 +29,8 @@ def paint_canvas(x, y, colors):
 	canvas.save(imagepath)
 	centers = findZones(imagepath)
 
-	# print centers
-
 	for i in range(len(centers)):
 		flood(pixels,centers[i], color = colors[i%len(colors)], visited = [])
-		print colors[i%len(colors)]
 
 	canvas = canvas.resize((1000,1000), Image.NEAREST)
 	canvas.save(imagepath)	
@@ -87,13 +83,6 @@ def findZones(imagepath):
 	x = []
 	y = []
 	
-	# cv2.imshow('blarg',imgray)
-	# # cv2.drawContours(image,contours, 0, (0,255,0),-1)
-	# # cv2.drawContours(image,contours, 1, (255,0,0),-1)	
-	# # cv2.imshow('blarg',image)
-	# cv2.waitKey(0)
-	# cv2.destroyAllWindows
-
 	for i in range(len(contours)):
 		for j in range(len(contours[i])):
 			x.append(contours[i][j][0][0])

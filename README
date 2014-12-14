@@ -1,0 +1,26 @@
+Infinite Beau
+*=-=*=-=*=-=*
+Created by Elena Shaw and Jiaying Wei
+
+Introduction
+-------------
+Infinite beau is an interactive program with a goal to help users creatively and visually compare defining characteristics of audio inputs, whether it be their music or their voices. It
+live records audio and converts it to a visual art piece based on calculated characteristics of the audio input.
+
+Press ESC to exit the program
+Click on the initial screen to start recording
+Click on the redo at the completion screen to run it again
+
+This project was inspired by Juan Lopez Gomez's Fourier Art and could not of been finished with out Charles T. Zahn and Ralph Z. Roskie's paper "Fourier Descriptors for Plane Closed Curves"
+
+Files
+--------------
+The program runs off the interactive GUI.py file. The below picture shows the software’s file integration architecture.
+ 
+audio_record.py: records live audio off the computer’s microphone and 		saves it as a .wav file
+infinite.py: uses the recorded .wav file to calculate signal 		characteristics and generates corresponding visual piece saves 		as a .png file.
+curve_generator.py: takes in signal characteristics and calculates the 		corresponding curve. Returns the list of coordinates 		associated with the generated curve.
+write_png.py: draws the generated curve using the list of coordinates 		and colors in the regions based on signal input amplitude.
+bezier.py: connects the beginning and end points of the curve to 	create a closed loop.
+DFT.py: calculates the defining signal characteristics using Fourier 		Series approximation.
+input_waves.py: converts and normalizes audio files into a list of 		coordinate points.
