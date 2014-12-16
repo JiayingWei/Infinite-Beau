@@ -3,7 +3,7 @@
 import pyaudio
 import wave
 
-def record(duration, filename, rate = 44100, channels = 2, aud_format = pyaudio.paInt16, _bytes = 1024):
+def record(duration=5, filename="Audio/recordtest.wav", rate = 44100, channels = 2, aud_format = pyaudio.paInt16, _bytes = 1024):
     """ for channels, 1 is mono and 2 is stereo
     """
     p = pyaudio.PyAudio()

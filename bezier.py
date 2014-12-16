@@ -1,7 +1,7 @@
 import math,numpy
 import matplotlib.pyplot as plt
 
-def Bezier(point1, point1hat, point2, point2hat):
+def bezier(point1, point1hat, point2, point2hat):
 	"""Returns x,y coordinates of a Bezier curve connecting two points. Used to make the openloop image, closed
 	"""
 	handleLength = 20

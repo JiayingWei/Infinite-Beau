@@ -37,7 +37,7 @@ class View:
 		"""
 		self.screen.fill(self.model.background)
 		recPic = pygame.image.load('GUIimages/recording.jpg')
-		self.screen.blit(recPic,((self.model.width - recPic.get_width())/2 , (self.model.height - recPic.get_height())/5))
+		# self.screen.blit(recPic,((self.model.width - recPic.get_width())/2 , (self.model.height - recPic.get_height())/5))
 
 		pygame.display.update()
 
@@ -47,13 +47,16 @@ class View:
 		two = pygame.image.load('GUIimages/two.jpg')
 		one = pygame.image.load('GUIimages/one.jpg')
 
-		count = (five,four,three,two,one)
+		count = (three,two,one)
 
 		for number in count:
 			self.screen.blit(number,((self.model.width - number.get_width())/2 , (self.model.height - number.get_height())/1.5))
 			pygame.display.update()
 			pygame.time.wait(1000)
 
+		self.screen.fill(self.model.background)
+		self.screen.blit(recPic,((self.model.width - recPic.get_width())/2 , (self.model.height - number.get_height())/1.5))		
+		pygame.display.update()
 		self.model.state = 'loading'
 
 	def drawLoading(self):
@@ -100,8 +103,6 @@ if __name__ == '__main__':
 	running = True
 	view.drawPrompt()
 
-	recording = Process(target = audio_record.record(5, "Audio/recordtest.wav"))
-	counting = Process(target = view.drawRecording())
 
 	while running:
 		for event in pygame.event.get():
@@ -112,8 +113,11 @@ if __name__ == '__main__':
 					running = False
 			if event.type == pygame.MOUSEBUTTONDOWN and model.state == 'prompt':
 				model.state = 'recording'
-				recording.start()
+				counting = Process(target = view.drawRecording())
 				counting.start()
+				recording = Process(target = audio_record.record())
+				recording.start()
+				
 			if event.type == pygame.MOUSEBUTTONDOWN and model.state == 'complete':
 				(mousex,mousey) = pygame.mouse.get_pos()
 				if mousex > model.width - 150  and mousex < model.width - 50 and mousey > model.height - 150 and mousey < model.height - 50:
